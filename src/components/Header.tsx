@@ -6,6 +6,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { LogIn } from 'lucide-react';
 import Sheet from './Sheet';
 import { siteConfig } from '@/config/site';
 
@@ -93,9 +94,11 @@ const Header: React.FC = () => {
             ) : (
               <Link
                 href="/admin"
-                className="rounded-lg px-2 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 hover:text-brand-600 dark:hover:bg-slate-800 dark:hover:text-brand-400"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-700 transition hover:border-brand-500/40 hover:bg-brand-500/10 hover:text-brand-600 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:text-brand-400"
+                aria-label="Sign in"
+                title="Sign in"
               >
-                Sign in
+                <LogIn className="h-4 w-4" strokeWidth={2.25} />
               </Link>
             )}
             <ThemeToggle className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 transition-all duration-200" />
@@ -155,9 +158,10 @@ const Header: React.FC = () => {
             ) : (
               <Link
                 href="/admin"
-                className="block w-full text-center text-sm font-semibold tracking-wide rounded-full py-3 px-4 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200"
+                className="flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 py-3 text-sm font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-200"
                 onClick={() => setIsMenuOpen(false)}
               >
+                <LogIn className="h-4 w-4 shrink-0" strokeWidth={2.25} />
                 Sign in
               </Link>
             )}

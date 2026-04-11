@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import DashboardSignOut from '@/components/admin/DashboardSignOut';
+import { adminQueryKeys } from '@/lib/admin/queryKeys';
 
 const nav = [
   { href: '/admin/dashboard/messages', label: 'Messages', badgeKey: 'messages' as const },
@@ -17,32 +19,25 @@ type Props = {
   children: React.ReactNode;
 };
 
+async function fetchPendingCount(): Promise<number> {
+  const res = await fetch('/api/admin/stats');
+  if (!res.ok) throw new Error('Failed to load stats');
+  const data = (await res.json()) as { pendingMessages?: number };
+  return typeof data.pendingMessages === 'number' ? data.pendingMessages : 0;
+}
+
 export default function AdminDashboardShell({ email, initialPendingMessages, children }: Props) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [pending, setPending] = useState(initialPendingMessages);
 
-  const refreshPending = useCallback(async () => {
-    try {
-      const res = await fetch('/api/admin/stats');
-      if (res.ok) {
-        const data = (await res.json()) as { pendingMessages?: number };
-        if (typeof data.pendingMessages === 'number') setPending(data.pendingMessages);
-      }
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  useEffect(() => {
-    refreshPending();
-  }, [pathname, refreshPending]);
-
-  useEffect(() => {
-    const onFocus = () => refreshPending();
-    window.addEventListener('focus', onFocus);
-    return () => window.removeEventListener('focus', onFocus);
-  }, [refreshPending]);
+  const { data: pending = initialPendingMessages } = useQuery({
+    queryKey: adminQueryKeys.stats,
+    queryFn: fetchPendingCount,
+    initialData: initialPendingMessages,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: true,
+  });
 
   return (
     <div className="min-h-screen bg-slate-100/80 dark:bg-slate-950 text-slate-900 dark:text-slate-100">

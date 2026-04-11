@@ -1,7 +1,10 @@
 'use client';
 
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
+import ConfirmDialog from '@/components/ConfirmDialog';
+import { adminQueryKeys } from '@/lib/admin/queryKeys';
 
 type JobRow = {
   _id: string;
@@ -13,40 +16,46 @@ type JobRow = {
   imageUrl?: string;
 };
 
+async function fetchJobs(): Promise<JobRow[]> {
+  const res = await fetch('/api/admin/jobs');
+  if (!res.ok) throw new Error('Failed to load jobs');
+  const data = await res.json();
+  return (data as JobRow[]).map((j) => ({
+    ...j,
+    closingDate: typeof j.closingDate === 'string' ? j.closingDate : new Date(j.closingDate).toISOString(),
+  }));
+}
+
 export default function AdminCareersList() {
-  const [jobs, setJobs] = useState<JobRow[]>([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/admin/jobs');
-      if (res.ok) {
-        const data = await res.json();
-        setJobs(
-          (data as JobRow[]).map((j) => ({
-            ...j,
-            closingDate: typeof j.closingDate === 'string' ? j.closingDate : new Date(j.closingDate).toISOString(),
-          }))
-        );
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const { data: jobs = [], isPending: loading } = useQuery({
+    queryKey: adminQueryKeys.jobs,
+    queryFn: fetchJobs,
+  });
 
-  useEffect(() => {
-    load();
-  }, [load]);
-
-  async function handleDelete(id: string) {
-    if (!confirm('Delete this job?')) return;
-    await fetch(`/api/admin/jobs/${id}`, { method: 'DELETE' });
-    await load();
+  async function performDelete(id: string) {
+    const res = await fetch(`/api/admin/jobs/${id}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error('Delete failed');
+    await queryClient.invalidateQueries({ queryKey: adminQueryKeys.jobs });
   }
 
   return (
     <div className="space-y-6">
+      <ConfirmDialog
+        open={deleteId !== null}
+        onOpenChange={(open) => !open && setDeleteId(null)}
+        title="Delete job listing?"
+        description="This removes the role from your careers page. You can’t undo this."
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        destructive
+        onConfirm={async () => {
+          if (deleteId) await performDelete(deleteId);
+        }}
+      />
+
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">Careers</h1>
@@ -122,7 +131,7 @@ export default function AdminCareersList() {
                   </Link>
                   <button
                     type="button"
-                    onClick={() => handleDelete(j._id)}
+                    onClick={() => setDeleteId(j._id)}
                     className="rounded-lg text-sm font-semibold text-rose-600 hover:underline dark:text-rose-400"
                   >
                     Delete

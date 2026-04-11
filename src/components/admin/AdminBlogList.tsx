@@ -1,7 +1,10 @@
 'use client';
 
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
+import ConfirmDialog from '@/components/ConfirmDialog';
+import { adminQueryKeys } from '@/lib/admin/queryKeys';
 
 type PostRow = {
   _id: string;
@@ -12,32 +15,42 @@ type PostRow = {
   imageUrl?: string;
 };
 
+async function fetchPosts(): Promise<PostRow[]> {
+  const res = await fetch('/api/admin/posts');
+  if (!res.ok) throw new Error('Failed to load posts');
+  return res.json();
+}
+
 export default function AdminBlogList() {
-  const [posts, setPosts] = useState<PostRow[]>([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/admin/posts');
-      if (res.ok) setPosts(await res.json());
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const { data: posts = [], isPending: loading } = useQuery({
+    queryKey: adminQueryKeys.posts,
+    queryFn: fetchPosts,
+  });
 
-  useEffect(() => {
-    load();
-  }, [load]);
-
-  async function handleDelete(id: string) {
-    if (!confirm('Delete this post?')) return;
-    await fetch(`/api/admin/posts/${id}`, { method: 'DELETE' });
-    await load();
+  async function performDelete(id: string) {
+    const res = await fetch(`/api/admin/posts/${id}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error('Delete failed');
+    await queryClient.invalidateQueries({ queryKey: adminQueryKeys.posts });
   }
 
   return (
     <div className="space-y-6">
+      <ConfirmDialog
+        open={deleteId !== null}
+        onOpenChange={(open) => !open && setDeleteId(null)}
+        title="Delete post?"
+        description="This removes the blog post from the site. You can’t undo this."
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        destructive
+        onConfirm={async () => {
+          if (deleteId) await performDelete(deleteId);
+        }}
+      />
+
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">Blog</h1>
@@ -103,7 +116,7 @@ export default function AdminBlogList() {
                   </Link>
                   <button
                     type="button"
-                    onClick={() => handleDelete(p._id)}
+                    onClick={() => setDeleteId(p._id)}
                     className="rounded-lg text-sm font-semibold text-rose-600 hover:underline dark:text-rose-400"
                   >
                     Delete

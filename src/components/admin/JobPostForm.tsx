@@ -1,8 +1,10 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { adminQueryKeys } from '@/lib/admin/queryKeys';
 
 function closingInputValue(iso: string) {
   const d = new Date(iso);
@@ -29,6 +31,7 @@ type Props = { mode: 'create' } | { mode: 'edit'; job: JobFormInitial };
 
 export default function JobPostForm(props: Props) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const isEdit = props.mode === 'edit';
   const initial = isEdit
     ? props.job
@@ -85,6 +88,7 @@ export default function JobPostForm(props: Props) {
           setMsg((err as { error?: string }).error || 'Update failed');
           return;
         }
+        await queryClient.invalidateQueries({ queryKey: adminQueryKeys.jobs });
         router.push('/admin/dashboard/careers');
         router.refresh();
       } else {
@@ -98,6 +102,7 @@ export default function JobPostForm(props: Props) {
           setMsg((err as { error?: string }).error || 'Create failed');
           return;
         }
+        await queryClient.invalidateQueries({ queryKey: adminQueryKeys.jobs });
         router.push('/admin/dashboard/careers');
         router.refresh();
       }

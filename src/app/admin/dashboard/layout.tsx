@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
-import AdminDashboardShell from '@/components/admin/AdminDashboardShell';
+import AdminDashboardProviders from '@/components/admin/AdminDashboardProviders';
 import { countPendingMessages } from '@/lib/db/messages';
 
 export default async function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
@@ -17,8 +17,8 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
   }
 
   return (
-    <AdminDashboardShell email={session.user.email} initialPendingMessages={initialPending}>
+    <AdminDashboardProviders email={session.user.email} initialPendingMessages={initialPending}>
       {children}
-    </AdminDashboardShell>
+    </AdminDashboardProviders>
   );
 }

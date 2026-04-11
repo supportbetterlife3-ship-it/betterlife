@@ -1,8 +1,10 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { adminQueryKeys } from '@/lib/admin/queryKeys';
 
 export type BlogPostFormInitial = {
   _id: string;
@@ -20,6 +22,7 @@ type Props =
 
 export default function BlogPostForm(props: Props) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const isEdit = props.mode === 'edit';
   const initial = isEdit
     ? props.post
@@ -67,6 +70,7 @@ export default function BlogPostForm(props: Props) {
           setMsg((err as { error?: string }).error || 'Update failed');
           return;
         }
+        await queryClient.invalidateQueries({ queryKey: adminQueryKeys.posts });
         router.push('/admin/dashboard/blog');
         router.refresh();
       } else {
@@ -80,6 +84,7 @@ export default function BlogPostForm(props: Props) {
           setMsg((err as { error?: string }).error || 'Create failed');
           return;
         }
+        await queryClient.invalidateQueries({ queryKey: adminQueryKeys.posts });
         router.push('/admin/dashboard/blog');
         router.refresh();
       }
