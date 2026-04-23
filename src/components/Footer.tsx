@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Facebook, Instagram } from 'lucide-react';
+import { Instagram } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 import { demoContact } from '@/app/contact/contactDetails';
 
@@ -16,21 +16,12 @@ const Footer = () => {
                     <div className="group text-center md:text-left">
                       
                         <p className="text-sm text-slate-900 dark:text-white leading-relaxed">
-                            Providing compassionate care for independent living with professional support and dedicated service excellence.
+                            Offering caring support that promotes independent living, combined with professional expertise and a strong commitment to high-quality service.
                         </p>
                         {/* Social links */}
                         <div className="mt-4 flex justify-center md:justify-start gap-4">
                             <a
-                                href={demoContact.social.facebook}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label="Visit our Facebook page"
-                                className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 text-[#1877F2] hover:text-[#0f5ec2] hover:border-[#1877F2] transition-colors duration-200"
-                            >
-                                <Facebook className="w-5 h-5" />
-                            </a>
-                            <a
-                                href={demoContact.social.instagram}
+                                href="https://www.instagram.com/betterlifesupportt"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="Visit our Instagram profile"

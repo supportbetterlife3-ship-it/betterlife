@@ -37,20 +37,20 @@ const AboutPage = () => {
             </p>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-8 leading-tight">
               <span className="bg-gradient-to-r from-emerald-700 via-teal-600 to-sky-600 dark:from-emerald-300 dark:via-cyan-300 dark:to-sky-300 bg-clip-text text-transparent">
-                Compassionate care
+              Caring support
               </span>{' '}
-              for independent living in the UK
+              for independent living across the UK
             </h1>
             <div className="space-y-5 text-base sm:text-lg text-slate-700 dark:text-slate-100 leading-relaxed">
               <p>
-                {siteConfig.brandName} is a community-focused provider of high-quality health and care support for
-                independent-living individuals. We combine professional expertise with genuine compassion to help people
-                feel safe, respected, and confident.
+                {siteConfig.brandName} is a community-driven organisation providing high-quality health and care
+                services for people living independently. We blend professional knowledge with heartfelt compassion to
+                help individuals feel secure, respected, and confident.
               </p>
               <p>
-                Our multi‑disciplinary team has extensive experience across health and social care. We work closely with
-                individuals, families, and local partners to design support that fits real lives – promoting dignity,
-                independence, and overall wellbeing.
+                Our skilled, multi-disciplinary team has broad experience in health and social care. We collaborate
+                closely with individuals, families, and local partners to develop tailored support that suits everyday
+                life&mdash;encouraging dignity, independence, and overall wellbeing.
               </p>
               <div className="mt-6 max-w-2xl mx-auto">
                 <ServiceArea variant="card" />

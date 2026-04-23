@@ -5,19 +5,15 @@ import ServiceCard from './ServiceCard';
 import { Service, type ServiceIconColor } from '@/types';
 import type { LucideIcon } from 'lucide-react';
 import {
- 
   MoonStar,
   ShoppingBag,
-  Sparkles,
   UtensilsCrossed,
   Home,
   Stethoscope,
   Pill,
-  SunMedium,
-  Plane,
-  Building2,
   ClipboardList,
-  Users,
+  Sparkles,
+  Trees,
 } from 'lucide-react';
 
 interface ServiceWithIcon extends Service {
@@ -28,107 +24,68 @@ interface ServiceWithIcon extends Service {
 
 // hard‑coded list of available services with short descriptions, icons and colors
 const SERVICES: ServiceWithIcon[] = [
-
-
   {
-    name: 'Overnight Care',
-    description:
-      'Night‑time support to ensure safety and comfort for those who need assistance around the clock.',
+    name: 'Night Support',
+    description: 'Overnight assistance.',
     icon: MoonStar,
-    tag: 'Night care',
+    tag: 'Overnight Assistance',
     iconColor: 'indigo',
   },
   {
-    name: 'Shopping',
-    description:
-      'Help with purchasing groceries, clothing or other essentials either in‑person or online.',
+    name: 'Errands',
+    description: 'Grocery shopping.',
     icon: ShoppingBag,
-    tag: 'Errands',
+    tag: 'Grocery Shopping',
     iconColor: 'amber',
   },
   {
-    name: 'Cleaning',
-    description: 'Light housekeeping to keep living spaces tidy and hygienic.',
-    icon: Sparkles,
-    tag: 'Household',
-    iconColor: 'cyan',
-  },
-  {
-    name: 'Meal Preparation',
-    description:
-      'Cooking nutritious meals according to dietary requirements and personal preferences.',
-    icon: UtensilsCrossed,
-    tag: 'Nutrition',
-    iconColor: 'orange',
-  },
-  {
-    name: 'General Household Duties',
-    description: 'Assistance with everyday chores such as laundry, gardening and administration.',
+    name: 'Home Care',
+    description: 'House cleaning.',
     icon: Home,
-    tag: 'Home life',
+    tag: 'House Cleaning',
     iconColor: 'emerald',
   },
   {
-    name: 'Health Appointments',
-    description:
-      'Accompanying clients to medical or therapy appointments and providing transport when needed.',
-    icon: Stethoscope,
-    tag: 'Appointments',
-    iconColor: 'teal',
+    name: 'Nutrition Support',
+    description: 'Meal preparation.',
+    icon: UtensilsCrossed,
+    tag: 'Meal Preparation',
+    iconColor: 'orange',
   },
   {
-    name: 'Prescription Pick‑up',
-    description:
-      'Collecting medications from pharmacies and ensuring they are taken as directed.',
-    icon: Pill,
-    tag: 'Medication',
-    iconColor: 'violet',
-  },
-  {
-    name: 'Indoor Activities',
-    description:
-      'Engaging clients with games, crafts, reading or other stimulating indoor pastimes.',
-    icon: Sparkles,
-    tag: 'Wellbeing',
-    iconColor: 'pink',
-  },
-  {
-    name: 'Outdoor Activities',
-    description:
-      'Support for walks, excursions or sports to promote wellbeing and social interaction.',
-    icon: SunMedium,
-    tag: 'Out & about',
-    iconColor: 'lime',
-  },
-  {
-    name: 'Holiday Care',
-    description:
-      'Supervised care during vacations or special events away from the usual environment.',
-    icon: Plane,
-    tag: 'Breaks away',
-    iconColor: 'sky',
-  },
-  {
-    name: '24 Hour Supported Accommodation',
-    description:
-      'Around‑the‑clock assistance in a dedicated living setting for those needing intensive support.',
-    icon: Building2,
-    tag: '24/7 support',
-    iconColor: 'slate',
-  },
-  {
-    name: 'Personalised Support Plan',
-    description: 'Bespoke care plans developed in collaboration with clients and families.',
+    name: 'Daily Living',
+    description: 'Routine household tasks.',
     icon: ClipboardList,
-    tag: 'Planning',
+    tag: 'Routine Household Tasks',
     iconColor: 'fuchsia',
   },
   {
-    name: 'Group Activities',
-    description: 'Facilitated social groups and community outings to encourage connection.',
-    icon: Users,
-    tag: 'Community',
-    iconColor: 'blue',
+    name: 'Medical Visits',
+    description: 'Appointment assistance.',
+    icon: Stethoscope,
+    tag: 'Appointment Assistance',
+    iconColor: 'teal',
+  },
+  {
+    name: 'Medication Support',
+    description: 'Prescription collection.',
+    icon: Pill,
+    tag: 'Prescription Collection',
+    iconColor: 'violet',
+  },
+  {
+    name: 'Wellbeing Activities',
+    description: 'Indoor engagement.',
+    icon: Sparkles,
+    tag: 'Indoor Engagement',
+    iconColor: 'pink',
+  },
+  {
+    name: 'Community Access',
+    description: 'Outdoor activities.',
+    icon: Trees,
+    tag: 'Outdoor Activities',
+    iconColor: 'lime',
   },
 ];
 
