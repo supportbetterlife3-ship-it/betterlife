@@ -19,11 +19,21 @@ const teamMembers = [
     role: 'Head of Operations',
     photo: '/anns.webp',
   },
+   {
+    name: 'Ifthiar Ahmed Farhan',
+    role: 'Commercial Lead',
+    photo: '/ifthiar.png',
+  },
   {
     name: 'Maimuna Hossain Rashmi',
     role: 'HR Manager',
     photo: '/maimuna.jpg',
   },
+   {
+    name: 'Yvonne Mnyani',
+    role: 'Business Advisor',
+    photo: '/yvone.webp',
+  }
 ];
 
 const AboutPage = () => {
