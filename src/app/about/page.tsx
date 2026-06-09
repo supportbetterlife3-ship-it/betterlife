@@ -34,6 +34,12 @@ const teamMembers = [
     role: 'Business Advisor',
     photo: '/yvone.webp',
   }
+  ,
+   {
+    name: 'Kemy Karki',
+    role: 'Team Leader',
+    photo: '/kemy.webp',
+  }
 ];
 
 const AboutPage = () => {
